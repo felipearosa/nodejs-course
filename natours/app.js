@@ -1,8 +1,13 @@
 const express = require('express');
 
-const app = express()
+const app = express();
 
-const port = 3000
+app.get('/', (req,res) => {
+  res.status(200).json({ message: "hello from the server side!", app: "Natours" });
+})
+
+
+const port = 3000;
 app.listen(port, () => {
-  console.log(`Server running on ${port} port...`)
+  console.log(`App running on ${port} port...`)
 });
