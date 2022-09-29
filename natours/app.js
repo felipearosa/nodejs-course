@@ -45,7 +45,6 @@ app.get('/api/v1/tours/:id', (req, res) => {
 });
 
 app.post('/api/v1/tours', (req ,res) => {
-
   const newId = tours[tours.length - 1].id + 1;
   console.log(newId)
   const newTour = Object.assign( { id: newId }, req.body);
@@ -60,7 +59,37 @@ app.post('/api/v1/tours', (req ,res) => {
       }
     })
   })
-})
+});
+
+app.patch('/api/v1/tours/:id', (req ,res) => {
+  if(req.params.id * 1 > tours.length){
+    return res.json({
+      status: "failed",
+      message: "invalid id"
+    })
+  }
+
+  res.status(200).json({
+    status: "sucess",
+    data: {
+      tour: 'updated tour here'
+    }
+  })
+});
+
+app.delete('/api/v1/tours/:id', (req ,res) => {
+  if(req.params.id * 1 > tours.length){
+    return res.json({
+      status: "failed",
+      message: "invalid id"
+    })
+  }
+
+  res.status(204).json({
+    status: "sucess",
+    data: null
+  })
+});
 
 const port = 3000;
 app.listen(port, () => {
