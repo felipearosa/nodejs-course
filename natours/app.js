@@ -6,12 +6,18 @@ const { redirect } = require('express/lib/response');
 const app = express();
 app.use(express.json());
 
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+})
+
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'sucess',
     length: tours.length,
+    requestedAt: req.requestTime,
     data: {
       tours
     }
