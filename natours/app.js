@@ -1,9 +1,14 @@
 const fs = require('fs')
 const express = require('express');
-const res = require('express/lib/response');
-const { redirect } = require('express/lib/response');
+const morgan = require('morgan')
+// const res = require('express/lib/response');
+// const { redirect } = require('express/lib/response');
 
 const app = express();
+
+// MIDDLEWARES
+app.use(morgan('dev'));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -13,6 +18,8 @@ app.use((req, res, next) => {
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
+
+// ROUTE HANDLERS
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'sucess',
@@ -90,6 +97,8 @@ const deleteTour = (req ,res) => {
   })
 };
 
+
+// ROUTES
 app.get('/api/v1/tours', getAllTours);
 app.post('/api/v1/tours', createTour);
 app.get('/api/v1/tours/:id', getTour);
@@ -99,6 +108,7 @@ app.delete('/api/v1/tours/:id', deleteTour);
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
+// START SERVER
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on ${port} port...`);
