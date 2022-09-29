@@ -1,6 +1,7 @@
 const fs = require('fs')
 const express = require('express');
 const res = require('express/lib/response');
+const { redirect } = require('express/lib/response');
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,25 @@ app.get('/api/v1/tours', (req, res) => {
       tours
     }
   });
+});
+
+app.get('/api/v1/tours/:id', (req, res) => {
+  const id = req.params.id * 1;
+  const tour = tours.find(el => el.id === id);
+
+  if(!tour){
+    return res.status(404).json({
+      status: 'failed',
+      message: 'Tour not found'
+    });
+  };
+
+  res.status(200).json({
+    status: "sucess",
+    data: {
+      tour
+    }
+  })
 });
 
 app.post('/api/v1/tours', (req ,res) => {
