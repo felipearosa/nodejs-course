@@ -4,14 +4,23 @@ const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-si
 
 exports.checkId = (req, res, next, val) => {
   if(val * 1 > tours.length){
-    return res.json({
-      status: "failed",
+    return res.status(404).json({
+      status: "fail",
       message: "invalid id"
     })
   };
   next();
 }
 
+exports.checkBody = (req, res, next) => {
+  if(!req.body.data.name || !req.body.data.price){
+    return res.status(404).json({
+      status: 'error',
+      message: 'invalid'
+    })
+  }
+  next();
+}
 
 exports.getAllTours = (req, res) => {
   res.status(200).json({
