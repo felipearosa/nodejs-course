@@ -2,6 +2,16 @@ const fs = require('fs');
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
 
+exports.checkId = (req, res, next, val) => {
+  if(val * 1 > tours.length){
+    return res.json({
+      status: "failed",
+      message: "invalid id"
+    })
+  };
+  next();
+}
+
 
 exports.getAllTours = (req, res) => {
   res.status(200).json({
@@ -51,13 +61,6 @@ exports.createTour = (req ,res) => {
 };
 
 exports.updateTour = (req ,res) => {
-  if(req.params.id * 1 > tours.length){
-    return res.json({
-      status: "failed",
-      message: "invalid id"
-    })
-  }
-
   res.status(200).json({
     status: "sucess",
     data: {
