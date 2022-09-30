@@ -2,6 +2,7 @@
 const express = require('express');
 const morgan = require('morgan')
 const tourRouter = require('./routes/tourRoutes')
+const userRouter = require('./routes/userRoutes')
 // const res = require('express/lib/response');
 // const { redirect } = require('express/lib/response');
 
@@ -17,51 +18,7 @@ app.use((req, res, next) => {
   next();
 })
 
-// ROUTE HANDLERS
-
-
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented yet'
-  })
-};
-
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented yet'
-  })
-};
-
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented yet'
-  })
-};
-
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented yet'
-  })
-};
-
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented yet'
-  })
-};
-
-
 // ROUTES
-
-const userRouter = express.Router();
-
-userRouter.route('/').get(getAllUsers).post(createUser);
-userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
