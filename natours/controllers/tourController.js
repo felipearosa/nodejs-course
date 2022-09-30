@@ -70,13 +70,6 @@ exports.updateTour = (req ,res) => {
 };
 
 exports.deleteTour = (req ,res) => {
-  if(req.params.id * 1 > tours.length){
-    return res.json({
-      status: "failed",
-      message: "invalid id"
-    })
-  }
-
   res.status(204).json({
     status: "sucess",
     data: null
