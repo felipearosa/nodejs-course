@@ -71,7 +71,7 @@ tourSchema.virtual('durationWeeks').get(function(){
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
-})
+});
 
 tourSchema.pre(/^find/, function(next) {
   this.find({
@@ -79,11 +79,16 @@ tourSchema.pre(/^find/, function(next) {
   });
   this.start = Date.now();
   next();
-})
+});
 
 tourSchema.post(/^find/, function(docs, next){
   // console.log(docs)
   console.log(`Query took ${Date.now() - this.start} milliseconds.`);
+  next();
+});
+
+tourSchema.pre('aggregate', function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 })
 
