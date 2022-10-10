@@ -1,3 +1,10 @@
+const AppError = require('./../utils/appError')
+
+const handleCastErrorDB = err => {
+  const message = `Invalid ${err.path}: ${err.value}`;
+  return new AppError(message, 400);
+}
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -18,11 +25,12 @@ const sendErrorProd = (err, res) => {
 
     // programming or some other error not leaking error details to user
   } else {
+
     console.error('ERROR: ', err)
 
     res.status(500).json({
       status: 'error',
-      mesage: 'Something went wrong!'
+      message: 'Something went wrong!'
     })
   }
 }
@@ -33,8 +41,11 @@ module.exports = (err, req, res, next) => {
 
   if (process.env.NODE_ENV === 'development'){
     sendErrorDev(err, res)
-  } else {
-    sendErrorProd(err, res);
+  } else if (process.env.NODE_ENV === 'production'){
+    let error = Object.assign(err)
+    if (error.name === 'CastError') error = handleCastErrorDB(error);
+
+    sendErrorProd(error, res);
   }
 
 }
