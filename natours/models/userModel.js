@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bycript = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -25,9 +26,23 @@ const userSchema = new mongoose.Schema({
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'User needs to confirm password']
+    required: [true, 'User needs to confirm password'],
+    validate: {
+      validator: function(el){
+        return el === this.password
+      },
+      message: 'Passwords must match'
+    }
   }
 });
+
+userSchema.pre('save', async function(next){
+  if (!this.isModified('password')) return next();
+
+  this.password = await bycript.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+  next();
+})
 
 const User = mongoose.model('User', userSchema);
 
