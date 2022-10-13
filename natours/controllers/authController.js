@@ -16,7 +16,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
+    passwordChangedAt: req.body.passwordChangedAt
   });
 
   const token = signToken(newUser._id)
@@ -69,7 +70,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('This user has been deleted.', 401));
   }
 
+  if(currentUser.changedPasswordAfter(decoded.iat)){
+    return next(new AppError('The password was changed, please login again.', 401))
+  }
 
 
+  req.user = currentUser;
   next();
 })
