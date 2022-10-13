@@ -1,3 +1,4 @@
+const { promisify } = require('util')
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const jwt = require('jsonwebtoken');
@@ -60,6 +61,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   if(!token){
     return next(new AppError('You have to login to have access!', 401))
   }
+
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   next();
 })
