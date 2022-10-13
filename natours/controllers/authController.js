@@ -64,5 +64,12 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
+  const currentUser = await User.findById(decoded.id);
+  if(!currentUser){
+    return next(new AppError('This user has been deleted.', 401));
+  }
+
+
+
   next();
 })
