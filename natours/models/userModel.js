@@ -66,6 +66,11 @@ userSchema.pre('save', async function(next){
   next();
 });
 
+userSchema.pre(/^find/, async function(next){
+  this.find({ active: { $ne: false } })
+  next();
+})
+
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword){
   return await bycript.compare(candidatePassword, userPassword);
 };
