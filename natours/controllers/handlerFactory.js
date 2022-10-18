@@ -24,3 +24,21 @@ exports.createOne = Model => catchAsync(async (req ,res,next) => {
     }
   });
 });
+
+exports.updateOne = Model => catchAsync(async (req, res, next) => {
+  const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  if(!doc){
+    return next(new AppError('The ID is wrong!', 404))
+  }
+
+  res.status(200).json({
+    status: "sucess",
+    data: {
+      data: doc
+    }
+  });
+});
