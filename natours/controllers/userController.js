@@ -12,23 +12,11 @@ const filterObj = (obj, ...fields) => {
   return finalObj;
 }
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: 'sucess',
-    results: users.length,
-    data:{
-      users
-    }
-  })
-
-});
 
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'not implemented yet'
+    message: 'Use signup'
   })
 };
 
@@ -61,6 +49,7 @@ exports.deleteMe = catchAsync(async(req, res, next) => {
   });
 });
 
+exports.getAllUsers = factory.getAll(User)
 exports.getUser = factory.getOne(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
