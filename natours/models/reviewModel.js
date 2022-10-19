@@ -46,14 +46,30 @@ reviewSchema.statics.calcAvgRatings = async function(tourId) {
     }
   ])
 
-  await Tour.findByIdAndUpdate(tourId, {
-    ratingsAverage: stats[0].avgRating,
-    ratingQuantity: stats[0].nRatings
-  })
+  if(stats.length > 0){
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsAverage: stats[0].avgRating,
+      ratingQuantity: stats[0].nRatings
+    })
+  } else {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsAverage: 4.5,
+      ratingQuantity: 0
+    })
+  }
 }
 
 reviewSchema.post('save', function() {
   this.constructor.calcAvgRatings(this.tour)
+})
+
+reviewSchema.pre(/^findOneAnd/, async function(next){
+  this.r = await this.findOne();
+  next();
+})
+
+reviewSchema.post(/^findOneAnd/, function(){
+  this.r.constructor.calcAvgRatings(this.r.tour)
 })
 
 reviewSchema.pre(/^find/, function(next){
@@ -61,7 +77,6 @@ reviewSchema.pre(/^find/, function(next){
     path: 'user',
     select: 'name photo'
   })
-
   next();
 })
 
