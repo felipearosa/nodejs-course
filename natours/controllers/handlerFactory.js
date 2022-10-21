@@ -10,7 +10,7 @@ exports.deleteOne = Model => catchAsync(async (req, res, next) => {
   }
 
   res.status(204).json({
-    status: "sucess",
+    status: "success",
     data: null
   })
 });
@@ -19,7 +19,7 @@ exports.createOne = Model => catchAsync(async (req ,res,next) => {
   const doc = await Model.create(req.body);
 
   res.status(201).json({
-    status: "sucess",
+    status: "success",
     data: {
       data: doc
     }
@@ -37,7 +37,7 @@ exports.updateOne = Model => catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     data: {
       data: doc
     }
@@ -54,7 +54,7 @@ exports.getOne = (Model, popOptions) => catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     data: {
       data: doc
     }
@@ -66,7 +66,7 @@ exports.getAll = Model =>  catchAsync(async (req, res, next) => {
   const docs = await features.query;
 
   res.status(200).json({
-    status: 'sucess',
+    status: 'success',
     requestedAt: req.requestTime,
     length: docs.length,
     data: {

@@ -27,7 +27,7 @@ const createSendToken = (user, statusCode, res) => {
   user.password = undefined;
 
   res.status(statusCode).json({
-    status: 'sucess',
+    status: 'success',
     token,
     data: {
       user: user
@@ -70,6 +70,8 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
     token = req.headers.authorization.split(' ')[1];
+  } else if(req.cookies.jwt){
+    token = req.cookies.jwt
   }
 
   if(!token){
@@ -89,6 +91,26 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 
   req.user = currentUser;
+  next();
+})
+
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if(req.cookies.jwt){
+    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+
+    const currentUser = await User.findById(decoded.id);
+    if(!currentUser){
+      return next();
+    }
+
+    if(currentUser.changedPasswordAfter(decoded.iat)){
+      return next()
+    }
+
+    res.locals.user = currentUser;
+    return next();
+  }
   next();
 })
 
@@ -122,7 +144,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     })
 
     res.status(200).json({
-      status: 'sucess',
+      status: 'success',
       message: 'Token sent to email'
     })
   } catch (err) {
