@@ -27,7 +27,7 @@ const createSendToken = (user, statusCode, res) => {
   user.password = undefined;
 
   res.status(statusCode).json({
-    status: 'sucess',
+    status: 'success',
     token,
     data: {
       user: user
@@ -144,7 +144,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     })
 
     res.status(200).json({
-      status: 'sucess',
+      status: 'success',
       message: 'Token sent to email'
     })
   } catch (err) {

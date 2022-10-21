@@ -38,7 +38,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     }
   ]);
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     data: {
       stats
     }
@@ -85,7 +85,7 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
 
 
   res.status(200).json({
-    status: 'sucess',
+    status: 'success',
     data:{
       plan
     }
@@ -106,7 +106,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) =>{
   const tours = await Tour.find({ startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } });
 
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     results: tours.length,
     data: {
       tours
@@ -144,7 +144,7 @@ exports.getDistances = catchAsync(async (req, res, next) =>{
   ])
 
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     data: {
       data: distances
     }
