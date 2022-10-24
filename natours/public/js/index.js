@@ -1,8 +1,9 @@
-import { login } from './login'
+import { login, logout } from './login'
 import { displayMap } from './mapbox';
 
 const mapBox = document.querySelector('#map');
 const loginForm = document.querySelector('.form');
+const logoutBtn = document.querySelector('.nav__el--logout');
 
 if(mapBox){
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -17,3 +18,5 @@ if (loginForm) {
     login(email, password)
   })
 }
+
+if(logoutBtn) logoutBtn.addEventListener('click', logout)
