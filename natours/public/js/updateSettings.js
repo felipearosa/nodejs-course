@@ -13,6 +13,7 @@ export const updateSettings = async(data, type) => {
       data
     })
 
+    console.log(result)
     if(result.data.status === 'success'){
       showAlert('success', `${type} successfully updated`);
       window.setTimeout(() => {
