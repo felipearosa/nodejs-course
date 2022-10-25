@@ -5,16 +5,6 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/img/users');
-//   },
-//   filename: (req, file, cb) => {
-//     const ext = file.mimetype.split('/')[1];
-//     cb(null, Error listen EADDRINUSE: address already in use :::3000);
-//   }
-// });
-
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
